@@ -1,7 +1,7 @@
 package io.github.jbalancer.node.discoverer;
 
-import org.apache.commons.io.IOUtils;
 import io.github.jbalancer.node.Node;
+import org.apache.commons.io.IOUtils;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;

@@ -1,11 +1,14 @@
 package io.github.jbalancer;
 
+import io.github.jbalancer.node.Node;
 import io.github.jbalancer.node.discoverer.Discoverer;
 import io.github.jbalancer.strategy.Strategy;
-import io.github.jbalancer.node.Node;
 
 import java.util.List;
 
+/**
+ * Component for creating {@link Balancer} instances.
+ */
 public interface BalancerFactory {
 
     Balancer create(String id, Strategy strategy, Discoverer discoverer);

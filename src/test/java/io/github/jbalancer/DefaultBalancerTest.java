@@ -1,10 +1,10 @@
 package io.github.jbalancer;
 
+import io.github.jbalancer.node.BalancedNode;
 import io.github.jbalancer.node.Node;
+import io.github.jbalancer.node.checker.Checker;
 import io.github.jbalancer.node.discoverer.Discoverer;
 import io.github.jbalancer.strategy.Strategy;
-import io.github.jbalancer.node.BalancedNode;
-import io.github.jbalancer.node.checker.Checker;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;

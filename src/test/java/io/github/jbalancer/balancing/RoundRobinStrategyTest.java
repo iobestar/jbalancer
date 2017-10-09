@@ -1,10 +1,10 @@
 package io.github.jbalancer.balancing;
 
 import io.github.jbalancer.Balancer;
+import io.github.jbalancer.node.BalancedNode;
 import io.github.jbalancer.node.Node;
 import io.github.jbalancer.strategy.Context;
 import io.github.jbalancer.strategy.RoundRobinStrategy;
-import io.github.jbalancer.node.BalancedNode;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;

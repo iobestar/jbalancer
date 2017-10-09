@@ -72,14 +72,31 @@ public class JBalancer implements BalancerFactory {
         LOGGER.info("JBalancer node discoverer started");
     }
 
+    /**
+     * Returns {@link Balancer} instance by unique identifier.
+     *
+     * @param balancerId balancer unique identifier
+     * @return balancer or null if not exists
+     */
     public Balancer getBalancer(String balancerId) {
         return balancers.get(balancerId);
     }
 
+    /**
+     * Returns list of all known {@link Balancer}.
+     *
+     * @return list of {@link Balancer}
+     */
     public List<Balancer> getBalancers() {
         return Collections.unmodifiableList(new ArrayList<>(balancers.values()));
     }
 
+    /**
+     * Enables all endpoints selected with balancer id and selector predicate.
+     *
+     * @param balancerId balancer unique identifier
+     * @param selector node slector predicate
+     */
     public void enableNodes(String balancerId, Predicate<BalancedNode> selector) {
 
         Balancer balancer = getBalancer(balancerId);
@@ -88,6 +105,12 @@ public class JBalancer implements BalancerFactory {
         balancer.getAll().stream().filter(selector).forEach(bn -> ((Node) bn).enable());
     }
 
+    /**
+     * Disables all endpoints selected with balancer id and selector predicate.
+     *
+     * @param balancerId balancer unique identifier
+     * @param selector node slector predicate
+     */
     public void disableNodes(String balancerId, Predicate<BalancedNode> selector) {
 
         Balancer balancer = getBalancer(balancerId);
@@ -118,6 +141,9 @@ public class JBalancer implements BalancerFactory {
         }
     }
 
+    /**
+     * Destroys and releases all used resources.
+     */
     public void destroy() {
 
         shutdownService(checkService);

@@ -9,13 +9,19 @@ import org.slf4j.LoggerFactory;
 import java.net.SocketTimeoutException;
 import java.net.URI;
 
+/**
+ *  Checks and updates {@link Node} state based on HTTP response and status.
+ *
+ *  If HTTP status URI returns code 200 node is active and alive. Otherwise node is not active.
+ *  If HTTP status URI is not reachable then node is not active and not alive.
+ */
 public class HttpChecker implements Checker {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpChecker.class);
 
     private final HttpClient httpClient;
 
-    public HttpChecker(HttpClient httpClient) {
+    HttpChecker(HttpClient httpClient) {
         this.httpClient = httpClient;
     }
 

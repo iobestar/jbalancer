@@ -9,6 +9,11 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.net.URI;
 
+/**
+ *  Checks and updates {@link Node} state based on TCP connection aliveness.
+ *
+ *  If TCP status URO is reachable node is active and alive. Otherwise node is not active and not alive.
+ */
 public class TcpChecker implements Checker {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TcpChecker.class);
@@ -19,7 +24,7 @@ public class TcpChecker implements Checker {
         this(2000);
     }
 
-    public TcpChecker(int connectionTimeout) {
+    TcpChecker(int connectionTimeout) {
         this.connectionTimeout = connectionTimeout;
     }
 

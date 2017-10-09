@@ -1,7 +1,7 @@
 package io.github.jbalancer.node.discoverer;
 
-import org.apache.commons.io.FileUtils;
 import io.github.jbalancer.node.Node;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.TypeDescription;
@@ -14,6 +14,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Discovers nodes from YAML files. For each balancer exists YAML file in {@code nodeDirectory}.
+ * Files are named with balancer ids.
+ *
+ * Node YAML file format:
+ * <code>
+ * nodes:
+ * - connection: tcp://host1:3000
+ *   status: tcp://127.0.0.1:3001
+ *   labels:
+ *     label-key: label-value
+ * - connection: tcp://host2:3000
+ *   status: tcp://127.0.0.1:3001
+ *   labels:
+ *     label-key: label-value
+ * </code>
+ */
 public class NodeFileDiscoverer implements Discoverer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NodeFileDiscoverer.class);

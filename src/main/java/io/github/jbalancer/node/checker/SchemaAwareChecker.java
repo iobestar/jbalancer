@@ -4,12 +4,18 @@ import io.github.jbalancer.node.Node;
 
 import java.net.URI;
 
+/**
+ *  Checks and updates {@link Node} state based node status URI schema.
+ *
+ *  If URI schema is {@code tcp} then {@link TcpChecker} is used.
+ *  If URI schema is {@code http} or {@code https} then {@link HttpChecker} is used.
+ */
 public class SchemaAwareChecker implements Checker {
 
     private final TcpChecker tcpChecker;
     private final HttpChecker httpChecker;
 
-    public SchemaAwareChecker(TcpChecker tcpChecker, HttpChecker httpChecker) {
+    SchemaAwareChecker(TcpChecker tcpChecker, HttpChecker httpChecker) {
         this.tcpChecker = tcpChecker;
         this.httpChecker = httpChecker;
     }

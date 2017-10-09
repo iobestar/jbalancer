@@ -3,10 +3,10 @@ package io.github.jbalancer;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.jayway.awaitility.Awaitility;
 import com.jayway.awaitility.Duration;
-import org.apache.commons.io.IOUtils;
 import io.github.jbalancer.node.BalancedNode;
 import io.github.jbalancer.node.discoverer.NodeFileDiscoverer;
 import io.github.jbalancer.strategy.RoundRobinStrategy;
+import org.apache.commons.io.IOUtils;
 import org.junit.*;
 import org.junit.rules.TemporaryFolder;
 

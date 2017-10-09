@@ -32,6 +32,9 @@ import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
+/**
+ * Simple HTTP client based on {@link CloseableHttpClient}.
+ */
 public class HttpClient implements Closeable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpClient.class);
@@ -105,15 +108,15 @@ public class HttpClient implements Closeable {
         return credentialsProvider;
     }
 
-    public CloseableHttpClient httpClient() {
+    CloseableHttpClient httpClient() {
         return httpClient;
     }
 
-    public int getConnectionTimeout() {
+    int getConnectionTimeout() {
         return connectionTimeout;
     }
 
-    public int getExecutionTimeout() {
+    int getExecutionTimeout() {
         return executionTimeout;
     }
 

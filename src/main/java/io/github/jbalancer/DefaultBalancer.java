@@ -1,11 +1,11 @@
 package io.github.jbalancer;
 
-import io.github.jbalancer.node.NodeManager;
-import io.github.jbalancer.node.discoverer.Discoverer;
-import io.github.jbalancer.strategy.Strategy;
 import io.github.jbalancer.node.BalancedNode;
 import io.github.jbalancer.node.Node;
+import io.github.jbalancer.node.NodeManager;
 import io.github.jbalancer.node.checker.Checker;
+import io.github.jbalancer.node.discoverer.Discoverer;
+import io.github.jbalancer.strategy.Strategy;
 
 import java.util.Collections;
 import java.util.List;
