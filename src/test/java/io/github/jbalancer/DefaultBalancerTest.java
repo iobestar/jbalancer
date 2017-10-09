@@ -135,7 +135,35 @@ public class DefaultBalancerTest {
 
         assertThat(balancer.getAll()).extracting(BalancedNode::getConnection).contains(URI.create("http://local:42"));
 
-        when(discoverer.discover(anyString())).thenReturn(Collections.singletonList(createNode("http://discovered:42"))).thenReturn(Collections.emptyList());
+        when(discoverer.discover(anyString()))
+                .thenReturn(Collections.singletonList(createNode("http://discovered:42")))
+                .thenReturn(Collections.emptyList());
+
+        balancer.discover();
+
+        assertThat(balancer.getAll()).extracting(BalancedNode::getConnection).contains(URI.create("http://discovered:42"));
+
+        balancer.discover();
+
+        assertThat(balancer.getAll()).extracting(BalancedNode::getConnection).contains(URI.create("http://local:42"));
+
+        verify(checker, times(2)).check(any(Node.class));
+    }
+
+    @Test
+    public void discoverInitialNodesWhenDiscovererThrowsException() throws Exception {
+
+        List<Node> initialNodes = Collections.singletonList(createNode("http://local:42"));
+
+        givenDefaultBalancerWithDiscoverer(null, initialNodes);
+        reset(discoverer);
+        reset(checker);
+
+        assertThat(balancer.getAll()).extracting(BalancedNode::getConnection).contains(URI.create("http://local:42"));
+
+        when(discoverer.discover(anyString()))
+                .thenReturn(Collections.singletonList(createNode("http://discovered:42")))
+                .thenThrow(RuntimeException.class);
 
         balancer.discover();
 

@@ -6,6 +6,8 @@ import io.github.jbalancer.node.NodeManager;
 import io.github.jbalancer.node.checker.Checker;
 import io.github.jbalancer.node.discoverer.Discoverer;
 import io.github.jbalancer.strategy.Strategy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.List;
@@ -15,6 +17,8 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 class DefaultBalancer implements Balancer, NodeManager {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultBalancer.class);
 
     private final String id;
     private final Strategy strategy;
@@ -71,27 +75,39 @@ class DefaultBalancer implements Balancer, NodeManager {
     void discover() {
 
         if (null == discoverer) {
-            if (nodes != initialNodes) {
-                check(initialNodes);
-                nodes = initialNodes;
-            }
+            discoverEmptyNodes();
             return;
         }
 
-        List<Node> discovered = discoverer.discover(getId());
-        if (null == discovered) {
-            return;
+        List<Node> discovered = Collections.emptyList();
+        try {
+            discovered = discoverer.discover(getId());
+            if (null == discovered) {
+                return;
+            }
+        } catch (Exception e) {
+            if (LOGGER.isTraceEnabled()) {
+                LOGGER.error("Error discovering nodes", e);
+            } else {
+                LOGGER.error("Error discovering nodes", e.getMessage());
+            }
         }
 
         if (discovered.isEmpty()) {
-            if (nodes != initialNodes) {
-                check(initialNodes);
-                nodes = initialNodes;
-            }
+            discoverEmptyNodes();
+            return;
         }
 
         check(discovered);
         nodes = Collections.unmodifiableList(discovered);
+    }
+
+    private void discoverEmptyNodes() {
+
+        if (nodes != initialNodes) {
+            check(initialNodes);
+            nodes = initialNodes;
+        }
     }
 
     private void check(List<Node> nodes) {
