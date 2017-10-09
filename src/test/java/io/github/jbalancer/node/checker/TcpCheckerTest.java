@@ -9,7 +9,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.net.InetAddress;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.net.URI;
 
 import static org.mockito.Mockito.*;
@@ -61,17 +60,14 @@ public class TcpCheckerTest {
     public void nodeAliveAndNotActiveWhenSocketTimeoutException() throws Exception {
 
         int port = givenServerSocket();
-        when(node.getStatus()).thenReturn(URI.create("tcp://localhost:" + port));
-        givenTcpChecker(100);
+        when(node.getStatus()).thenReturn(URI.create("tcp://10.0.0.0:" + port));
+        givenTcpChecker(10);
 
-        try (Socket backlogSocket = new Socket("localhost", port)) {
+        tcpChecker.check(node);
 
-            tcpChecker.check(node);
-
-            verify(node, times(1)).setActive(false);
-            verify(node, times(1)).setAlive(true);
-            verify(node, times(1)).setCheckStatus(anyString());
-        }
+        verify(node, times(1)).setActive(false);
+        verify(node, times(1)).setAlive(true);
+        verify(node, times(1)).setCheckStatus(anyString());
     }
 
     @Test
