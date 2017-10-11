@@ -1,9 +1,38 @@
 # JBalancer
 Simple Java solution for performing client side load balancing. 
 
-## Getting started
+## Quick start
 
 See integration test for [JBalancer](https://github.com/iobestar/jbalancer/blob/master/src/test/java/io/github/jbalancer/JBalancerIT.java)
+
+```java
+import io.github.jbalancer.Balancer;
+import io.github.jbalancer.JBalancer;
+import io.github.jbalancer.node.Node;
+import io.github.jbalancer.strategy.RoundRobinStrategy;
+
+import java.net.URI;
+import java.util.Arrays;
+
+public class QuickStart {
+
+    public static void main(String[] args) throws InterruptedException {
+
+        JBalancer jBalancer = new JBalancer.Builder().build();
+        Runtime.getRuntime().addShutdownHook(new Thread(jBalancer::destroy));
+
+        Balancer balancer = jBalancer.create("cluster1", new RoundRobinStrategy(), balancerId -> Arrays.asList(
+                new Node(URI.create("https://jbalancer1.io:443"), URI.create("tcp://github.com:443")),
+                new Node(URI.create("https://jbalancer2.io:443"), URI.create("tcp://github.com:443"))
+        ));
+
+        while (true) {
+            System.out.println(balancer.getBalanced().getConnection().toString());
+            Thread.sleep(1000);
+        }
+    }
+}
+```
 
 ## Running the tests
 
