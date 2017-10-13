@@ -1,6 +1,8 @@
 # JBalancer
 Simple Java solution for performing client side load balancing. 
 
+[![Build Status](https://travis-ci.org/iobestar/jbalancer.svg?branch=master)](https://travis-ci.org/iobestar/jbalancer)
+
 ## Quick start
 
 See integration test for [JBalancer](https://github.com/iobestar/jbalancer/blob/master/src/test/java/io/github/jbalancer/JBalancerIT.java)
