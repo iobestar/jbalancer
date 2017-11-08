@@ -69,28 +69,28 @@ public class HttpCheckerTest {
     }
 
     @Test
-    public void nodeAliveAndNotActiveWhenSocketTimeoutException() throws Exception {
+    public void noChangeWhenSocketTimeoutException() throws Exception {
 
         when(node.getStatus()).thenReturn(URI.create("http://localhost:9090"));
         when(httpClient.httpClient().execute(any(HttpHead.class))).thenThrow(new SocketTimeoutException("socket timeout"));
 
         httpChecker.check(node);
 
-        verify(node, times(1)).setActive(false);
-        verify(node, times(1)).setAlive(true);
+        verify(node, times(0)).setActive(anyBoolean());
+        verify(node, times(0)).setAlive(anyBoolean());
         verify(node, times(1)).setCheckStatus(anyString());
     }
 
     @Test
-    public void nodeDeadAndNotActiveWhenException() throws Exception {
+    public void noChangeWhenException() throws Exception {
 
         when(node.getStatus()).thenReturn(URI.create("http://localhost:9090"));
         when(httpClient.httpClient().execute(any(HttpHead.class))).thenThrow(new RuntimeException("socket timeout"));
 
         httpChecker.check(node);
 
-        verify(node, times(1)).setActive(false);
-        verify(node, times(1)).setAlive(false);
+        verify(node, times(0)).setActive(anyBoolean());
+        verify(node, times(0)).setAlive(anyBoolean());
         verify(node, times(1)).setCheckStatus(anyString());
     }
 }

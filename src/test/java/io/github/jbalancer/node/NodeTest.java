@@ -6,7 +6,6 @@ import java.net.URI;
 import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class NodeTest {
 
@@ -31,41 +30,33 @@ public class NodeTest {
     @Test
     public void markNodeAliveDead() throws Exception {
 
-        int stateBarrier = 3;
-
-        Node node = createNodeWithStateBarrier(stateBarrier);
+        Node node = createNode();
         assertThat(node.isAlive()).isFalse();
 
         node.setAlive(true);
         assertThat(node.isAlive()).isTrue();
 
-        for (int i = 0; i < stateBarrier; i++) {
-            node.setAlive(false);
-        }
+        node.setAlive(false);
         assertThat(node.isAlive()).isFalse();
     }
 
     @Test
     public void activateDeactivateNode() throws Exception {
 
-        int stateBarrier = 3;
-
-        Node node = createNodeWithStateBarrier(3);
+        Node node = createNode();
         assertThat(node.isActive()).isFalse();
 
         node.setActive(true);
         assertThat(node.isActive()).isTrue();
 
-        for (int i = 0; i < stateBarrier; i++) {
-            node.setActive(false);
-        }
+        node.setActive(false);
         assertThat(node.isActive()).isFalse();
     }
 
     @Test
     public void enableDisableNode() throws Exception {
 
-        Node node = new Node(URI.create("http://localhost:9090"), URI.create("http://localhost:9090/status"));
+        Node node = createNode();
         assertThat(node.isEnabled()).isTrue();
 
         node.disable();
@@ -76,12 +67,24 @@ public class NodeTest {
     }
 
     @Test
-    public void invalidStateBarrier() throws Exception {
+    public void setActiveAndGetPrevious() throws Exception {
 
-        assertThatThrownBy(() -> createNodeWithStateBarrier(0)).isInstanceOf(IllegalArgumentException.class);
+        Node node = createNode();
+        final boolean current = node.isActive();
+
+        assertThat(node.isActive() == node.setActiveAndGetPrevious(!current));
     }
 
-    private static Node createNodeWithStateBarrier(int stateBarrier) {
-        return new Node(Collections.emptyMap(),URI.create("http://localhost:9090"), URI.create("http://localhost:9090/status"), stateBarrier);
+    @Test
+    public void setAliveAndGetPrevious() throws Exception {
+
+        Node node = createNode();
+        final boolean current = node.isAlive();
+
+        assertThat(node.isAlive() == node.setAliveAndGetPrevious(!current));
+    }
+
+    private static Node createNode() {
+        return new Node(Collections.emptyMap(),URI.create("http://localhost:9090"), URI.create("http://localhost:9090/status"));
     }
 }

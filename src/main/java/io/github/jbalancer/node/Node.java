@@ -12,18 +12,15 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class Node implements BalancedNode {
 
-    private static final int DEFAULT_STATE_BARRIER = 3;
+    /**
+     * Node aliveness - true or false.
+     */
+    private final AtomicBoolean alive = new AtomicBoolean(false);
 
     /**
-     * Node aliveness - zero if is reachable non-zero could be unreachable.
+     * Node activeness - true or false.
      */
-    private volatile int aliveCount = 0;
-
-    /**
-     * Node activeness - zero if node is ready to serve non-zero could be not ready to serve.
-     */
-    private volatile int activeCount = 0;
-
+    private final AtomicBoolean active = new AtomicBoolean(false);
 
     /**
      * Node availability - {@code true} if node can become active {@code false} if can't.
@@ -45,8 +42,6 @@ public class Node implements BalancedNode {
      */
     private Map<String, String> labels;
 
-    private final int stateBarrier;
-
     /**
      * Check status message.
      */
@@ -57,20 +52,9 @@ public class Node implements BalancedNode {
     }
 
     public Node(Map<String, String> labels, URI connection, URI status) {
-        this(labels, connection, status, DEFAULT_STATE_BARRIER);
-    }
-
-    public Node(Map<String, String> labels, URI connection, URI status, int stateBarrier) {
         this.labels = Optional.ofNullable(labels).orElseGet(Collections::emptyMap);
         this.connection = connection;
         this.status = status;
-        this.stateBarrier = checkStateBarrier(stateBarrier);
-    }
-
-    private int checkStateBarrier(int stateBarrier) {
-
-        if (stateBarrier < 1) throw new IllegalArgumentException("State barrier must be at least 1");
-        return stateBarrier;
     }
 
     public Map<String, String> getLabels() {
@@ -78,29 +62,33 @@ public class Node implements BalancedNode {
     }
 
     public boolean isAlive() {
-        return aliveCount == stateBarrier;
+        return alive.get();
     }
 
     public void setAlive(boolean alive) {
+        this.alive.compareAndSet(!alive, alive);
+    }
 
-        if (!alive) {
-            synchronized (this) {
-                if (aliveCount >= stateBarrier) aliveCount--;
-            }
-        } else aliveCount = stateBarrier;
+    public boolean setAliveAndGetPrevious(boolean alive) {
+
+        final boolean previous = this.alive.get();
+        setAlive(alive);
+        return previous;
     }
 
     public boolean isActive() {
-        return activeCount == stateBarrier;
+        return active.get();
     }
 
     public void setActive(boolean active) {
+        this.active.compareAndSet(!active, active);
+    }
 
-        if (!active) {
-            synchronized (this) {
-                if (activeCount >= stateBarrier) activeCount--;
-            }
-        } else activeCount = stateBarrier;
+    public boolean setActiveAndGetPrevious(boolean active) {
+
+        final boolean previous = this.active.get();
+        setActive(active);
+        return previous;
     }
 
     public boolean isEnabled() {

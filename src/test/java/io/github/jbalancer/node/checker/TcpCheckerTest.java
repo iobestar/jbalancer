@@ -57,7 +57,7 @@ public class TcpCheckerTest {
     }
 
     @Test
-    public void nodeAliveAndNotActiveWhenSocketTimeoutException() throws Exception {
+    public void noChangeWhenSocketTimeoutException() throws Exception {
 
         int port = givenServerSocket();
         when(node.getStatus()).thenReturn(URI.create("tcp://10.0.0.0:" + port));
@@ -65,8 +65,8 @@ public class TcpCheckerTest {
 
         tcpChecker.check(node);
 
-        verify(node, times(1)).setActive(false);
-        verify(node, times(1)).setAlive(true);
+        verify(node, times(0)).setActive(anyBoolean());
+        verify(node, times(0)).setAlive(anyBoolean());
         verify(node, times(1)).setCheckStatus(anyString());
     }
 
