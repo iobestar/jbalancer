@@ -9,7 +9,7 @@ import java.net.*;
 /**
  *  Checks and updates {@link Node} state based on TCP connection aliveness.
  *
- *  If TCP status URO is reachable node is active and alive. Otherwise node is not active and not alive.
+ *  If TCP status URI is reachable node is active and alive. Otherwise node is not active and not alive.
  */
 public class TcpChecker implements Checker {
 
