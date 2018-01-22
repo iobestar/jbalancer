@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.*;
+import java.util.Optional;
 
 /**
  *  Checks and updates {@link Node} state based on TCP connection aliveness.
@@ -46,7 +47,8 @@ public class TcpChecker implements Checker {
         } catch (SocketTimeoutException e) {
             node.setCheckStatus(e.getClass().getSimpleName() + ":" + e.getMessage());
         } catch (ConnectException e) {
-            if (e.getMessage().equalsIgnoreCase("connection refused")) {
+            final String message = Optional.ofNullable(e.getMessage()).orElse("").toLowerCase();
+            if (message.contains("connection refused")) {
                 node.setActive(false);
                 node.setAlive(false);
             }
