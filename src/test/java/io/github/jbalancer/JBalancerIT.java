@@ -4,7 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import com.jayway.awaitility.Awaitility;
 import com.jayway.awaitility.Duration;
 import io.github.jbalancer.node.BalancedNode;
-import io.github.jbalancer.node.discoverer.NodeFileDiscoverer;
+import io.github.jbalancer.node.discoverer.YamlFileNodeDiscoverer;
 import io.github.jbalancer.strategy.RoundRobinStrategy;
 import org.apache.commons.io.IOUtils;
 import org.junit.*;
@@ -176,7 +176,7 @@ public class JBalancerIT {
     private void givenBalancer() throws Exception {
 
         balancer = jBalancer.create("anybalancer", new RoundRobinStrategy(),
-                new NodeFileDiscoverer(givenNodesFile("anybalancer").getParentFile()));
+                new YamlFileNodeDiscoverer(givenNodesFile("anybalancer").getParentFile()));
     }
 
     private File givenNodesFile(String name) throws Exception {

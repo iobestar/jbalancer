@@ -56,7 +56,7 @@ class DefaultBalancer implements Balancer, NodeManager {
 
     private List<Node> getAllInternal() {
 
-        if (!nodes.isEmpty()) {
+        if (null != nodes && !nodes.isEmpty()) {
             return nodes;
         }
         return initialNodes;

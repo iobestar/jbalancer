@@ -13,12 +13,12 @@ import java.nio.charset.Charset;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class NodeFileDiscovererTest {
+public class YamlFileNodeDiscovererTest {
 
     @Rule
     public TemporaryFolder discovererFolder = new TemporaryFolder();
 
-    private NodeFileDiscoverer nodeFileDiscoverer;
+    private YamlFileNodeDiscoverer yamlFileNodeDiscoverer;
 
     @Test
     public void discoverNodes() throws Exception {
@@ -37,8 +37,8 @@ public class NodeFileDiscovererTest {
 
         givenFileDiscoverer();
 
-        assertThat(nodeFileDiscoverer.discover("balancer1")).extracting(Node::getConnection).contains(URI.create("http://localhost:9090"), URI.create("http://localhost:8080"));
-        assertThat(nodeFileDiscoverer.discover("balancer1")).isNull();
+        assertThat(yamlFileNodeDiscoverer.discover("balancer1")).extracting(Node::getConnection).contains(URI.create("http://localhost:9090"), URI.create("http://localhost:8080"));
+        assertThat(yamlFileNodeDiscoverer.discover("balancer1")).isNull();
     }
 
     private File givenBalancerNodeFile(String balancerId, String nodes) throws Exception {
@@ -50,6 +50,6 @@ public class NodeFileDiscovererTest {
 
     private void givenFileDiscoverer() {
 
-        nodeFileDiscoverer = new NodeFileDiscoverer(discovererFolder.getRoot());
+        yamlFileNodeDiscoverer = new YamlFileNodeDiscoverer(discovererFolder.getRoot());
     }
 }
