@@ -62,7 +62,7 @@ public class TcpCheckerTest {
 
         int port = givenServerSocket();
         when(node.getStatus()).thenReturn(URI.create("tcp://localhost:" + port));
-        givenTcpChecker(10);
+        givenTcpChecker(1);
 
         try(Socket socket = new Socket("localhost", port)) {
             tcpChecker.check(node);
