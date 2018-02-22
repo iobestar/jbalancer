@@ -31,7 +31,7 @@ public class JBalancerIT {
     private static final WireMockServer SERVER_2 = new WireMockServer(wireMockConfig().dynamicPort());
     private static int serverPort2;
 
-    private JBalancer jBalancer = new JBalancer.Builder().checkPeriod(1000).discoverPeriod(1000).build();
+    private JBalancer jBalancer = new JBalancer.Builder().checkPeriod(500).discoverPeriod(1000).build();
 
     private Balancer balancer;
 
@@ -95,8 +95,10 @@ public class JBalancerIT {
         givenBalancer();
 
         assertRemovedFromBalancer(()-> {
-            SERVER_2.stop();
-            Awaitility.await().atMost(Duration.FIVE_SECONDS).until(() -> !SERVER_2.isRunning());
+            if (SERVER_2.isRunning()) {
+                SERVER_2.stop();
+                Awaitility.await().atMost(Duration.FIVE_SECONDS).until(() -> !SERVER_2.isRunning());
+            }
         }, "http://localhost:" + serverPort1);
     }
 
@@ -160,14 +162,14 @@ public class JBalancerIT {
     private void assertRemovedFromBalancer(Runnable disable, String expectedUrl) throws Exception {
 
         Set<String> balancedUrls = new HashSet<>();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 5; i++) {
             balancedUrls.clear();
             for (int j = 0; j < 10; j++) {
                 BalancedNode node = balancer.getBalanced();
                 balancedUrls.add(node.getConnection().toString());
             }
-            Thread.sleep(1000);
             disable.run();
+            Thread.sleep(1000);
         }
 
         assertThat(balancedUrls).containsOnly(expectedUrl);
