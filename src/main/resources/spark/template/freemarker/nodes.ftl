@@ -9,24 +9,24 @@
     <div>
         <h2>Nodes</h2>
     </div>
-    <hr>
-    <div>
-        <div class="form-group">
-            <textarea class="form-control" placeholder="Enter select expression..."></textarea>
-        </div>
-        <div class="form-group">
-            <button class="btn btn-primary">Select</button>
-            <div class="btn-group">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Action <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a href="#">Enable</a></li>
-                    <li><a href="#">Disable</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
+    <#--<hr>-->
+    <#--<div>-->
+        <#--<div class="form-group">-->
+            <#--<textarea class="form-control" placeholder="Enter select expression..."></textarea>-->
+        <#--</div>-->
+        <#--<div class="form-group">-->
+            <#--<button class="btn btn-primary">Select</button>-->
+            <#--<div class="btn-group">-->
+                <#--<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+                    <#--Action <span class="caret"></span>-->
+                <#--</button>-->
+                <#--<ul class="dropdown-menu">-->
+                    <#--<li><a href="#">Enable</a></li>-->
+                    <#--<li><a href="#">Disable</a></li>-->
+                <#--</ul>-->
+            <#--</div>-->
+        <#--</div>-->
+    <#--</div>-->
     <hr>
     <div>
         <table class="table table-striped">

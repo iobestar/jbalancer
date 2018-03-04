@@ -29,9 +29,7 @@ public class Application {
     public JBalancer jBalancer(YamlNodesStorage yamlNodesStorage) {
 
         final JBalancer jBalancer = new JBalancer.Builder().build();
-        yamlNodesStorage.getBalancerIds().forEach(id -> {
-            jBalancer.create(id, new RoundRobinStrategy(), new YamlNodeDiscoverer(s -> yamlNodesStorage.getYamlNodes(id)));
-        });
+        yamlNodesStorage.getBalancerIds().forEach(id -> jBalancer.create(id, new RoundRobinStrategy(), new YamlNodeDiscoverer(s -> yamlNodesStorage.getYamlNodes(id))));
         return jBalancer;
     }
 
@@ -49,8 +47,7 @@ public class Application {
 
     @Bean(destroyMethod = "close")
     public DB db() {
-        DB db = DBMaker.fileDB("balancer.db").make();
-        return db;
+        return DBMaker.fileDB("balancer.db").make();
     }
 
     public static void main(String[] args) throws Exception {
